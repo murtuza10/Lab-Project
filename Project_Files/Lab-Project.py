@@ -6,6 +6,7 @@ sys.path.append("../dust3r")
 from dust3r.dust3r.model import load_model, AsymmetricCroCo3DStereo
 import matplotlib.pyplot as plt
 from train_model import train_model
+from unet_model import unet_model
 
 
 if __name__ == '__main__':
@@ -33,3 +34,4 @@ if __name__ == '__main__':
         train_model(model, train_loader, test_loader)
     else:
         print("Error: Dataset not loaded!")  
+    unet_model()
