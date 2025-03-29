@@ -1,23 +1,28 @@
-from generate_pseudo_gt import load_model, generate_pseudo_gt
+from generate_pseudo_gt import  generate_pseudo_gt
 from dataset_preparation import generate_data
 import torch
 import sys
 sys.path.append("../dust3r") 
-from dust3r.dust3r.model import load_model, AsymmetricCroCo3DStereo
+sys.path.append("../mast3r") 
+from dust3r.model import AsymmetricCroCo3DStereo
 import matplotlib.pyplot as plt
 from train_model import train_model
 from unet_model import unet_model
+from mast3r.model import AsymmetricMASt3R
+
+
+
 
 
 if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model_path = "../mast3r/checkpoints/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth"  # Update with actual path
-    model = load_model(model_path, device)
-    generate_pseudo_gt(model, device)
+    model_path = "../checkpoints/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth"  # Update with actual path
+    model = AsymmetricMASt3R.from_pretrained(model_path).to(device)
+    #generate_pseudo_gt(model, device)
     print("Generating dataset...")
     train_loader, test_loader = generate_data()
     print("Dataset preparation complete!")
-    model_path = "checkpoints/DUSt3R_ViTLarge_BaseDecoder_224_linear.pth"
+    model_path = "../checkpoints/DUSt3R_ViTLarge_BaseDecoder_224_linear.pth"
     model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
     data = next(iter(test_loader))
     view1,view2 = {'img':data['view1'].to(device)},{'img':data['view2'].to(device)}
@@ -27,7 +32,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load model
-    model_path = "checkpoints/dust3r_thermal.pth"
+    model_path = "../checkpoints/dust3r_thermal.pth"
     model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
 
     if train_loader and test_loader:
