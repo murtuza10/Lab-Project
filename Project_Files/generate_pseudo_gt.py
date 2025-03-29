@@ -48,7 +48,7 @@ def run_inference_on_pair(image_arr, model, device):
 
 
 def generate_pseudo_gt(model, device):
-    base_path = '/home/nfs/inf6/data/datasets/ThermalDBs/Freiburg/train/'
+    base_path = '/lustre/scratch/data/s27mhusa_hpc-ner_model_data/train/'
     rgb_path, _ = load_file_paths(base_path)
 
     shape = (len(rgb_path) - 1, 224 * 224 * 3)
