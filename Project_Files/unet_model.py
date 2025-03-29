@@ -14,6 +14,8 @@ from PIL.ImageOps import exif_transpose
 import random
 import torchvision.transforms as transforms
 import os
+from tqdm import tqdm
+
 
 
 
@@ -523,6 +525,7 @@ def unet_model():
     optimizer = torch.optim.Adam(unet.parameters(), lr=0.001, weight_decay=1e-5)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=1/3)
     
+    wandb.login(key="ed7faaa7784428261467aee38c86ccc5c316f954")
     wandb.init(project="unet_thermal", name="unet_thermal", config={"epochs": 100})
     wandb.watch(unet, log_freq=5)
     train_rgb_thermal(100, unet, criterion, train_loader, test_loader, optimizer, scheduler, device)

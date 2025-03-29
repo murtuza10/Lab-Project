@@ -18,7 +18,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model_path = "../checkpoints/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth"  # Update with actual path
     model = AsymmetricMASt3R.from_pretrained(model_path).to(device)
-    #generate_pseudo_gt(model, device)
+    generate_pseudo_gt(model, device)
     print("Generating dataset...")
     train_loader, test_loader = generate_data()
     print("Dataset preparation complete!")
@@ -31,9 +31,9 @@ if __name__ == '__main__':
     """Main function to execute training."""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # # Load model
-    # model_path = "../checkpoints/dust3r_thermal.pth"
-    # model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
+    # Load model
+    model_path = "../checkpoints/dust3r_thermal.pth"
+    model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
 
     if train_loader and test_loader:
         train_model(model, train_loader, test_loader)
