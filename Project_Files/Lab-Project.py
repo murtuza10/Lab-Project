@@ -31,9 +31,9 @@ if __name__ == '__main__':
     """Main function to execute training."""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Load model
-    model_path = "../checkpoints/dust3r_thermal.pth"
-    model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
+    # # Load model
+    # model_path = "../checkpoints/dust3r_thermal.pth"
+    # model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
 
     if train_loader and test_loader:
         train_model(model, train_loader, test_loader)

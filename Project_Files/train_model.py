@@ -159,7 +159,7 @@ def train_model(model, train_dataloader, test_dataloader):
     NUM_EPOCHS = 30
 
     # Initialize WandB
-    wandb.login()
+    wandb.login(key="ed7faaa7784428261467aee38c86ccc5c316f954")
     wandb.init(project="Dust3r_thermal", name="Dust3r_thermal", config={"learning_rate": 1e-5, "epochs": NUM_EPOCHS})
 
     wandb.watch(model, log_freq=5)
@@ -167,7 +167,7 @@ def train_model(model, train_dataloader, test_dataloader):
     trained_model, loss_train, loss_val = train(NUM_EPOCHS, model, criterion, train_dataloader, test_dataloader, optimizer, scheduler, device)
 
     # Save Model
-    model_path = "checkpoints/dust3r_thermal.pth"
+    model_path = "../checkpoints/dust3r_thermal_epoch16_lr1e-5_224x224.pth"
     torch.save({'model': trained_model.state_dict(), 'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(), 'epoch': NUM_EPOCHS}, model_path)
     print(f"Model saved at {model_path}")
 
@@ -177,7 +177,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load model
-    model_path = "checkpoints/dust3r_thermal.pth"
+    model_path = "../checkpoints/DUSt3R_ViTLarge_BaseDecoder_224_linear.pth"
     model = AsymmetricCroCo3DStereo.from_pretrained(model_path).to(device)
 
     if train_dataloader and test_dataloader:

@@ -502,15 +502,20 @@ def unet_model():
     shape = (len(rgb_path) - 1, 224 * 224 * 3)
 
     unet = model_unet_conv(3, 256, 512, 6)
-    train_idx = list(range(int(len(thermal_path) * 0.8)))
-    test_idx = list(range(int(len(thermal_path) * 0.8), len(thermal_path)))
+    
 
-    train_dataset = ImagePairDataset_rgb_thermal(rgb_path, thermal_path, filename1, filename2, shape, train_idx, test_idx)
-    test_dataset = ImagePairDataset_rgb_thermal(rgb_path, thermal_path, filename1, filename2, shape, train_idx, test_idx, train_mode=False)
+    train_idx, test_idx = [i for i in range(0,int(len(thermal_path)*0.8))], [i for i in range(int(len(thermal_path)*0.8),len(thermal_path))]
+    rgb_train_path,thermal_train_path = [rgb_path[i] for i in  train_idx],[thermal_path[i] for i in  train_idx]
+    rgb_test_path,thermal_test_path = [rgb_path[i] for i in  test_idx],[thermal_path[i] for i in  test_idx]
+
+
+    train_dataset = ImagePairDataset_rgb_thermal(rgb_train_path,thermal_train_path,filename1,filename2,shape=shape,train_idx=train_idx, test_idx=test_idx)
+    test_dataset = ImagePairDataset_rgb_thermal(rgb_test_path,thermal_test_path,filename1,filename2,shape=shape, train_idx=train_idx, test_idx=test_idx, train_mode=False)
 
     train_loader = DataLoader(train_dataset, batch_size=4, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False)
-
+    
+    
     visualize_rgb_thermal(next(iter(test_loader)))
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     unet.to(device)
